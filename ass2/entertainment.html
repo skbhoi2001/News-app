@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #nav{
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            background-color: antiquewhite;
+            padding: 10px;
+        }
+        #nav>a{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav">
+        <a href="news_2.html">Home</a>
+        <a href="sports.html">Sports</a>
+        <a href="entertainment.html">Entertainment</a>
+        <a href="technology.html">Technology</a>
+    </div>
+    <h1>News OF the Day</h1>
+    <div id="display"></div>
+
+    <script>
+        window.addEventListener("load",function(){
+            fetchData()
+        })
+        function fetchData(){
+            event.preventDefault()
+            fetch("https://newsapi.org/v2/everything?q=entertainment&q=keyword&apiKey=0656aebe3e4c44b6b3293a9500185497")
+            .then(function(response){
+               return response.json()
+            })
+            .then(function(response){ 
+                console.log(response.articles)
+                news(response.articles)
+               // return
+            })
+            .catch(function(error){
+
+            })
+        }
+
+
+        function news(res){
+               const container = document.getElementById("display");
+               container.innerHTML = "";
+               let row = document.createElement("div");
+               for(let i=0; i< 10; i++){
+                var news=res[i]
+                var card = document.createElement("div")    
+                var div1= document.createElement("div")
+                var image=document.createElement("img")
+                image.src=news.urlToImage
+                image.style.width="200px"
+                image.style.height="200px"
+                div1.append(image)
+                div1.style.margin="20px"
+
+                var div2=document.createElement("div")
+                var h2=document.createElement("h2")
+                h2.textContent=news.title
+                var p1=document.createElement("p")
+                p1.textContent=news.description
+                var p3=document.createElement("p")
+                p3.textContent=news.author
+                var p2=document.createElement("p")
+                p2.textContent=news.publishedAt
+                div2.append(h2,p1,p2,p3)
+                div2.style.margin="20px"
+
+                card.append(div1,div2)
+                card.style.display="flex"
+                row.append(card);                 
+               }              
+               container.append(row)
+
+           }
+    </script>
+</body>
+</html>
